@@ -14,9 +14,9 @@ module Twitter
     access_token = OAuth::AccessToken.from_hash(consumer, token_hash )
   end
 
-  def self.here(var)
+  def self.here(raul)
     access_token = prepare_access_token(@access_token , @access_token_secret)
-    response = access_token.request(:get, "https://api.twitter.com/1.1/search/tweets.json?q=%23#{var}&count=10").body
+    response = access_token.request(:get, "https://api.twitter.com/1.1/search/tweets.json?q=%23#{raul}&count=10").body
     var = JSON.parse(response)['statuses']
     text = []
     var.each { |lol| text.push(lol['text']) }

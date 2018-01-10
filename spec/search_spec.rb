@@ -1,13 +1,9 @@
-require_relative '../search.rb'
+require_relative "../search.rb"
 
-describe "Twitter" do
+describe Twitter do
   describe ".here" do
-    context '' do
-      let(:var) { %w[Penarol] }
-      let(:lol) {  }
-      subject { Twitter.here(var) }
-      it { is_expected.to eq(lol) }
-    end
-
+    let(:tag) {"Penarol"}
+    subject { Twitter.here(tag) }
+   it { is_expected.to eq(true) }
   end
 end
