@@ -9,17 +9,19 @@ module Twitter
   @access_token_secret = "awImllz0NQD1sfMu0UQzYiOBCKedOZNVFDolPTbESUzM9"
 
   def self.prepare_access_token(oauth_token, oauth_token_secret)
-    consumer = OAuth::Consumer.new(@consumer_key, @consumer_secret  , { :site => "https://ads.api.twitter.com"})
+    consumer = OAuth::Consumer.new(@consumer_key, @consumer_secret, { :site => "https://ads.api.twitter.com"})
     token_hash = { :oauth_token => oauth_token, :oauth_token_secret => oauth_token_secret }
-    access_token = OAuth::AccessToken.from_hash(consumer, token_hash )
+    access_token = OAuth::AccessToken.from_hash(consumer, token_hash)
   end
 
   def self.here(raul)
-    access_token = prepare_access_token(@access_token , @access_token_secret)
+    access_token = prepare_access_token(@access_token, @access_token_secret)
     response = access_token.request(:get, "https://api.twitter.com/1.1/search/tweets.json?q=%23#{raul}&count=10").body
     var = JSON.parse(response)['statuses']
     text = []
     var.each { |lol| text.push(lol['text']) }
     print text
+  # puts JSON.pretty_generate(var)
+
   end
 end
