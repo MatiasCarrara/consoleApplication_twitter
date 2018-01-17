@@ -7,12 +7,12 @@ describe Twitter do
     subject { Twitter.prepare_access_token(token, token_secret ) }
     let(:token) { "946407467315073024-4VXdadSPr1N4tNtCqBU44Wzc4bcjWxu" }
     let(:token_secret) { "awImllz0NQD1sfMu0UQzYiOBCKedOZNVFDolPTbESUzM9" }
-    context "token" do
+    context "access token" do
       it '' do
         expect(subject.token).to eq(token)
       end
     end
-    context "token_secret" do
+    context "access token secret" do
       it '' do
         expect(subject.secret).to eq(token_secret)
       end
