@@ -43,4 +43,53 @@ describe Twitter do
       end
     end
   end
+
+  describe '.topic' do
+    context 'request trending topics' do
+      subject { Twitter.topic }
+      let(:text) { 'i using facebook' }
+      let(:body) do
+        [
+          {
+            trends: [
+              {
+                name: text
+              }
+            ]
+          }
+        ]
+      end
+      before do
+        stub_request(:get, 'https://api.twitter.com/1.1/trends/place.json?id=468739').to_return(body: JSON(body))
+      end
+      it 'returns the name of the trend' do
+        expect(subject).to eq([text])
+      end
+    end
+  end
+
+  describe '.bio' do
+    subject { Twitter.bio(name) }
+    context '' do
+      let(:text) { 'Developer?' }
+      let(:body) do
+        {
+          id: 946_407_467_315_073_024,
+          id_str: '946407467315073024',
+          name: 'MatiasCarrara',
+          screen_name: 'matias_carrara',
+          location: '',
+          profile_location: nil,
+          description: text
+        }
+      end
+      let(:name) { 'matias_carrara' }
+      before do
+        stub_request(:get, "https://api.twitter.com/1.1/users/show.json?screen_name=#{name}").to_return(body: JSON(body))
+      end
+      it '' do
+        expect(subject).to eq(text)
+      end
+    end
+  end
 end

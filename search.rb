@@ -17,4 +17,20 @@ module Twitter
     back = JSON.parse(response)['statuses']
     back.map { |save| save['text'] }
   end
+
+  def self.topic
+    access_token = prepare_access_token(ENV['TOKEN'], ENV['TOKEN_SECRET'])
+    response = access_token.request(:get, 'https://api.twitter.com/1.1/trends/place.json?id=468739').body
+    back = JSON.parse(response).first['trends']
+    text = []
+    back.each { |save| text.push(save['name']) }
+    text
+  end
+
+  def self.bio(name)
+    access_token = prepare_access_token(ENV['TOKEN'], ENV['TOKEN_SECRET'])
+    response = access_token.request(:get, "https://api.twitter.com/1.1/users/show.json?screen_name=#{name}").body
+    back = JSON.parse(response)
+    back['description']
+  end
 end
