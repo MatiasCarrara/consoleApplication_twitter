@@ -3,6 +3,8 @@ module Twitter
   require 'oauth'
   require 'dotenv'
 
+  Dotenv.load('.env')
+
   def self.prepare_access_token(oauth_token, oauth_token_secret)
     consumer = OAuth::Consumer.new(ENV['KEY'], ENV['SECRET'], site: 'https://ads.api.twitter.com')
     token_hash = { oauth_token: oauth_token, oauth_token_secret: oauth_token_secret }
