@@ -1,7 +1,8 @@
+require 'json'
+require 'oauth'
+require 'dotenv'
+
 module Twitter
-  require 'json'
-  require 'oauth'
-  require 'dotenv'
 
   Dotenv.load('.env')
 
@@ -11,16 +12,16 @@ module Twitter
     OAuth::AccessToken.from_hash(consumer, token_hash)
   end
 
+  @access_token = prepare_access_token(ENV['TOKEN'], ENV['TOKEN_SECRET'])
+  
   def self.search(hashtag)
-    access_token = prepare_access_token(ENV['TOKEN'], ENV['TOKEN_SECRET'])
-    response = access_token.request(:get, "https://api.twitter.com/1.1/search/tweets.json?q=%23#{hashtag}&count=10").body
+    response = @access_token.request(:get, "https://api.twitter.com/1.1/search/tweets.json?q=%23#{hashtag}&count=10").body
     back = JSON.parse(response)['statuses']
     back.map { |save| save['text'] }
   end
 
   def self.topic
-    access_token = prepare_access_token(ENV['TOKEN'], ENV['TOKEN_SECRET'])
-    response = access_token.request(:get, 'https://api.twitter.com/1.1/trends/place.json?id=468739').body
+    response = @access_token.request(:get, 'https://api.twitter.com/1.1/trends/place.json?id=468739').body
     back = JSON.parse(response).first['trends']
     text = []
     back.each { |save| text.push(save['name']) }
@@ -28,8 +29,7 @@ module Twitter
   end
 
   def self.bio(name)
-    access_token = prepare_access_token(ENV['TOKEN'], ENV['TOKEN_SECRET'])
-    response = access_token.request(:get, "https://api.twitter.com/1.1/users/show.json?screen_name=#{name}").body
+    response = @access_token.request(:get, "https://api.twitter.com/1.1/users/show.json?screen_name=#{name}").body
     back = JSON.parse(response)
     back['description']
   end
